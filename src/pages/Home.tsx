@@ -1,16 +1,8 @@
 import Login from "./Login";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
-  // useEffect(() => {
-  //     fetch('http://localhost:8080/Post/GetAllPosts')
-  //     .then(res => {
-  //         return res.json();
-  //     })
-  //     .then(data => {
-  //         console.log(data)
-  //     })
-  // }, []);
 
   return (
     <div>
