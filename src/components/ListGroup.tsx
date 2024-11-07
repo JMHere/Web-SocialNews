@@ -1,15 +1,14 @@
 //import { Fragment } from "react";
 //import { MouseEvent } from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // { itmes: [], heading: string}
 interface ListGroupProps {
-  items: string[];
-  heading: string;
-  onSelectItem: (item: string) => void;
+  items: [];
 }
 
-function ListGroup({ items, heading, onSelectItem }: ListGroupProps) {
+function ListGroup({ items }: ListGroupProps) {
   // items = [];
   //Hook
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -20,9 +19,6 @@ function ListGroup({ items, heading, onSelectItem }: ListGroupProps) {
   const handleClick = (event: MouseEvent) => console.log(event);
 
   // function in react
-  const getMessage = () => {
-    return items.length === 0 && <p>No items found</p>;
-  };
 
   // if statment in react
   //   if (items.length === 0)
@@ -38,25 +34,29 @@ function ListGroup({ items, heading, onSelectItem }: ListGroupProps) {
     //<Fragment>
     //Fragment tag without the word fragment
     <>
-      <h1>{heading}</h1>
-      {getMessage()}
       <ul className="list-group">
         {items.map((item, index) => (
-          <li
-            className={
-              selectedIndex === index
-                ? "list-group-item active"
-                : "list-group-item"
-            }
-            key={item}
-            onClick={() => {
-              setSelectedIndex(index);
-              onSelectItem(item)
-            }}
-          >
-            {item}
-          </li>
+          <div>
+            <li
+              className={
+                selectedIndex === index
+                  ? "list-group-item active"
+                  : "list-group-item"
+              }
+              key={index}
+              onClick={() => {
+                setSelectedIndex(index);
+                //onSelectItem(item)
+              }}
+            >
+              {item.username}
+            </li>
+            <li>
+              <Link to={"/userPage/" + item.pageId}>{item.username}</Link> 
+            </li>
+          </div>
         ))}
+        
       </ul>
     </>
     //</Fragment>

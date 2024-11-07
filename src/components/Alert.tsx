@@ -5,13 +5,14 @@ interface AlertProps {
     children: ReactNode;
     dismiss?: string;
     pRole?: string;
+    onClose?: () => void
 }
 
-function Alert({children, dismiss, pRole} : AlertProps) {
+function Alert({children, dismiss, pRole, onClose} : AlertProps) {
   return (<>
     <div className={"alert alert-primary " + dismiss} role={pRole}>
-    <strong>{children}</strong> bruh
-    <Button classString="btn-close" dismiss="alert" arial="Close"></Button>
+    <strong>{children}</strong>
+    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={onClose}></button>
     </div>
     </>
   )

@@ -1,15 +1,26 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
+import Button from "./Button";
 
 function Navbar() {
   const [show, setShow] = useState("");
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     show == "" ? setShow("show") : setShow("");
   };
 
+  const logOut = () => {
+    sessionStorage.removeItem("UserCred");
+    navigate("/");
+  };
+
+  const update = () => {
+    navigate("/updatePage");
+  }
+
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           Social News
@@ -29,26 +40,33 @@ function Navbar() {
         <div className={"collapse navbar-collapse " + show} id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/">
-                Home
+              <Link className="nav-link" aria-current="page" to="/yourPage">
+                My Page
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/signup">
-                SignUp
+              <Link className="nav-link" to="/search">
+                Search
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/login">
-                Login
+              <Link className="nav-link" to="/fyp">
+                For You
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/yourPage">
-                Login
+              <Link className="nav-link" to="/createPost">
+              Create Post <i className="bi bi-plus-circle"></i>
               </Link>
             </li>
           </ul>
+          <Button
+            classString="btn btn-outline-danger mx-auto"
+            clicked={logOut}
+            buttonText="Log Out"
+          />
+          <button className="btn btn-secondary" onClick={update}>Update <i className="bi bi-gear"></i></button >
+          
         </div>
       </div>
     </nav>

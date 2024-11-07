@@ -1,6 +1,6 @@
 import { ChangeEvent, useState, useEffect } from "react";
 import Button from "../components/Button";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { Link, Navigate, redirect, useNavigate } from "react-router-dom";
 import useFetch from "../components/UseFetch";
 
 function Login() {
@@ -82,6 +82,9 @@ function Login() {
           clicked={loginAcc}
           buttonText="Login"
         />
+      </div>
+      <div>
+        <span>Don't have an account?</span><Link to="/signup"> Sign Up</Link>
       </div>
     </div>
   );
