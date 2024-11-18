@@ -4,11 +4,11 @@ import useFetch from "../components/UseFetch";
 import Alert from "../components/Alert";
 
 function SignUp() {
-    const [alertVisable, setAlertVisable] = useState(true);
+    const [alertVisable, setAlertVisable] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -49,34 +49,35 @@ function SignUp() {
         setAlertVisable(true)
     } else {
         console.log("You valid bro")
+        fetch("http://localhost:8080/User/AddUser", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(user),
+        })
+          .then((res) => {
+            if (!res.ok) {
+              throw Error("Failed to get data");
+            }
+            return res.json();
+          })
+          .then((data) => {
+            console.log("User Added");
+            sessionStorage.setItem("UserCred", data.userId);
+            navigate("/yourPage");
+          })
+          .catch((err) => {
+            if (err.name == "AbortError") {
+              console.log("fetch Aborted");
+            } else {
+              setIsLoading(false);
+              setError(err.message);
+              console.log(error)
+            }
+          });
     }
     //console.log(user);
 
-    // fetch("http://localhost:8080/User/AddUser", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(user),
-    // })
-    //   .then((res) => {
-    //     if (!res.ok) {
-    //       throw Error("Failed to get data");
-    //     }
-    //     return res.json();
-    //   })
-    //   .then((data) => {
-    //     console.log("User Added");
-    //     sessionStorage.setItem("UserCred", data.userId);
-    //     navigate("/yourPage");
-    //   })
-    //   .catch((err) => {
-    //     if (err.name == "AbortError") {
-    //       console.log("fetch Aborted");
-    //     } else {
-    //       setIsLoading(false);
-    //       setError(err.message);
-    //       console.log(error)
-    //     }
-    //   });
+    
   }
 
   return (
