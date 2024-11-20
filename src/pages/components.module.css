@@ -10,9 +10,21 @@
 
 .proPic {
     border-radius: 50%;
-    max-width: 20px;
+    max-width: 80px;
 }
 
 .postImage {
-    width: 100px;
+    width: 500px;
+}
+
+.forYouPageImage {
+    width: 300px;
+}
+
+.forYouPost {
+    margin: auto;
+}
+
+.titleText {
+    text-align: center;
 }

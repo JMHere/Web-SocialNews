@@ -12,6 +12,9 @@ function Navbar() {
 
   const logOut = () => {
     sessionStorage.removeItem("UserCred");
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("pageId");
+    sessionStorage.removeItem("image");
     navigate("/");
   };
 

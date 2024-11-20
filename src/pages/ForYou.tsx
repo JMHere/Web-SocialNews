@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import styles from "./components.module.css"
+import PostComp from "../components/PostComp";
 
 function ForYou() {
 
@@ -11,7 +12,11 @@ function ForYou() {
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState("")
 
+    interface PostType {
+      postImage: any, PostDescription: any, postLikes: any, postShares: any, postText: any, username: any
+    }
 
+    let post: PostType = { postImage: pic, PostDescription: "", postLikes: 0, postShares: 0, postText: "", username: username} 
 
     fetch("http://localhost:8080/Post/GetAllPosts")
         .then((res) => {
@@ -23,9 +28,14 @@ function ForYou() {
         .then((data) => {
           console.log("Posts Recieved");
           console.log(data)
-          setPic(data[0].postImage)
-          setUsername(data.username);
-          console.log(pic)
+          for (let i = 0; i < data.length; i++) {
+            console.log(i)
+            // setPic(data[i].postImage);
+            // //console.log(post.postImage)
+            // setUsername(data[i].username);
+          }
+          
+          //console.log(pic)
 
         })
         .catch((err) => {
@@ -38,12 +48,12 @@ function ForYou() {
           }
         });
 
-
     return (
         <div>
             <Navbar />
-            <h1>For You Page</h1>
-            <img src={pic} className={styles.postImage}></img>
+            <h1 className={styles.titleText}>For You</h1>
+            {/* <img src={pic} className={styles.postImage}></img> */}
+            <PostComp item={post}></PostComp>
         </div>
     );
 }

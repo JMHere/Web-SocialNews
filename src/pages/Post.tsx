@@ -1,4 +1,3 @@
-import Select from "react-select";
 import Navbar from "../components/Navbar";
 import styles from "./components.module.css"
 import { useRef, useState } from "react";
@@ -8,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function Post() {
 
     const [post, setPost] = useState("true")
-    const [title, setTitle] = useState("")
+    //const [title, setTitle] = useState("")
     const [postText, setPostText] = useState("")
     const [postDescription, setPostDescription] = useState("")
     const [postImage, setPostImage] = useState(defaultImage)
@@ -17,9 +16,8 @@ function Post() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
-
+    // getting session for credentials
     let SesUsername = sessionStorage.getItem("username")
-    let intel = sessionStorage.getItem("UserCred")
     let pageId = sessionStorage.getItem("pageId")
     
 
@@ -33,10 +31,6 @@ function Post() {
         console.log()
     }
 
-    const changeTitle = (event: any) => {
-        setTitle(event.target.value)
-    }
-
     const changeDescription = (event: any) => {
         setPostDescription(event.target.value)
     }
@@ -47,9 +41,8 @@ function Post() {
 
     const postThis = () => {
         let validPost = false;
-        console.log(title)
         console.log(postText)
-        if (title == "" || (post == "false" && postText == "")) {
+        if (post == "false" && postText == "") {
             validPost = false
         } else {
             validPost = true
@@ -60,7 +53,7 @@ function Post() {
 
     const createPost = (valid: any) => {
         let deleted = false;
-        const post = { title, postDescription, deleted, postImage};
+        const post = {postDescription, deleted, postImage};
     
         if (valid == false) {
             console.log("Invalid Post")
@@ -80,7 +73,6 @@ function Post() {
               })
               .then((data) => {
                 console.log("Post Added");
-                //sessionStorage.setItem("UserCred", data.userId);
                 navigate("/yourPage");
               })
               .catch((err) => {
@@ -103,8 +95,6 @@ function Post() {
 
     const changePostImage = () => {
         const uploadedFile = uploadImageRef.current.files[0];
-
-        const cachedURL = URL.createObjectURL(uploadedFile);
         const reader = new FileReader()
 
         reader.onload = (e) => {
@@ -125,8 +115,6 @@ function Post() {
         <div>
             <Navbar />
             <div className={styles.div} >
-                <input placeholder="Post Title" className={styles.inputs} onChange={changeTitle}></input>
-                <br />
                 <select defaultValue={"Hello"} onChange={changePostType}>
                     {postTypes.map((type, index) => (
                         <option key={index} value={type.value}>{type.label}</option>
@@ -136,6 +124,7 @@ function Post() {
                 {post != "true" && <textarea placeholder="What's on your mind" className={styles.inputs} onChange={getTextArea}></textarea>}
                 <br />
                 {post == "true" && <img src={postImage} className={styles.postImage}></img>}
+                <br />
                 <button onClick={uploadImage}>Upload Image</button>
                 <br/>
                 <input type="file" hidden ref={uploadImageRef} accept="image/*" onChange={changePostImage}></input>
