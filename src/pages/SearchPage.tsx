@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import ListGroup from "../components/ListGroup";
+//import ListGroup from "../components/ListGroup";
+import SearchComp from "../components/SearchComp";
 
 function SearchPage() {
 
@@ -9,11 +10,18 @@ function SearchPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [url, setUrl] = useState("");
-    const [users, setUsers] = useState(null);
+
+    const [gotAllUsers, setGotAllUsers] = useState(false);
+    const [allUsers, setAllUsers] = useState<any>([])
+    let allUsersArray: any[] | null = []
 
     const search = (e: any) => {
         setUrl(intUrl + e.target.value)
-        //console.log(url)
+        console.log(allUsersArray)
+    }
+
+    interface userCard {
+      pageId: any, profilePicture: any, username: any
     }
 
     useEffect(() => {
@@ -26,9 +34,17 @@ function SearchPage() {
           })
           .then((data) => {
             console.log(data);
-            setUsers(data)
-            //sessionStorage.setItem("UserCred", data.userId);
-            //navigate("/yourPage")
+            for (let i = 0; i < data.length; i++) {
+              let user: userCard = {
+                pageId: data[i].pageId,
+                profilePicture: data[i].profilePicture,
+                username: data[i].username
+              }
+              allUsersArray.push(user)
+            }
+            console.log(allUsersArray)
+            setAllUsers(allUsersArray)
+            setGotAllUsers(true)
           })
           .catch((err) => {
             if (err.name == "AbortError") {
@@ -40,7 +56,7 @@ function SearchPage() {
           });
       }, [url]);
 
-
+        console.log(allUsers)
 
     return (
         <div>
@@ -50,7 +66,9 @@ function SearchPage() {
                 <span className="input-group-text" id="addon-wrapping"><i className="bi bi-search"></i></span>
                 <input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping" onChange={search}/>
             </div>
-            {users != null && <ListGroup items={users}></ListGroup>}
+            {gotAllUsers != false && allUsers.map((user: userCard, index: any) => (
+              <SearchComp user={user} key={index}></SearchComp>
+            ))}
         </div>
     );
 }
