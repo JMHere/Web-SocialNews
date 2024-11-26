@@ -17,14 +17,78 @@ function UserPage() {
     const [followers, setFollowers] = useState(null);
     const [posts, setPosts] = useState(null);
     const [pic, setPic] = useState("");
-
+    const [checkSelf, setCheckSelf] = useState(true)
+    const [isFollowed, setIsFollowed] = useState(false);
+    const [isFollowing, setIsFollwing] = useState("Follow");
 
     const [gotAllPosts, setGotAllPosts] = useState(false);
     const [allPosts, setAllPosts] = useState<any>([])
     let allPostsArray: any[] | null = []
 
+    let pageId = sessionStorage.getItem("pageId")
+
     interface PostType {
       postImage: any, postDescription: any, postLikes: any, postShares: any, postText: any, username: any
+    }
+
+    const follow = () => {
+      if (isFollowed == true) {
+        fetch("http://localhost:8080/UserPage/" + pageId + "/unfollow/" + id, {
+          method: "POST",
+        })
+        .then((res) => {
+          if (!res.ok) {
+            throw Error("Failed to get data");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log("UnFollowed");
+          console.log(data)
+          setIsFollowed(data)
+          if (data == true) {
+            setIsFollwing("Following")
+          }
+        })
+        .catch((err) => {
+          if (err.name == "AbortError") {
+            console.log("fetch Aborted");
+          } else {
+            setIsLoading(false);
+            setError(err.message);
+            console.log(error)
+          }
+        })
+
+      } else {
+
+        fetch("http://localhost:8080/UserPage/" + pageId + "/follow/" + id, {
+          method: "POST",
+        })
+        .then((res) => {
+          if (!res.ok) {
+            throw Error("Failed to get data");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log("Followed");
+          console.log(data)
+          setIsFollowed(data)
+          if (data == true) {
+            setIsFollwing("Following")
+          }
+        })
+        .catch((err) => {
+          if (err.name == "AbortError") {
+            console.log("fetch Aborted");
+          } else {
+            setIsLoading(false);
+            setError(err.message);
+            console.log(error)
+          }
+        })
+      }
     }
 
     const defualtImage = "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
@@ -45,6 +109,9 @@ function UserPage() {
           setBio(data.bio)
           setFollowers(data.numberOfFollowers)
           setPosts(data.numberOfPosts)
+          if (id == pageId) {
+            setCheckSelf(false)
+          }
 
         })
         .catch((err) => {
@@ -97,8 +164,35 @@ function UserPage() {
                 setError(err.message);
                 console.log(error)
               }
-            })}, [id])
+            })}, [])
 
+
+      //useEffect( () => {
+        fetch("http://localhost:8080/UserPage/checkFollow/" + pageId + "/" + id)
+              .then((res) => {
+                if (!res.ok) {
+                  throw Error("Failed to get data");
+                }
+                return res.json();
+              })
+              .then((data) => {
+                console.log("Follow Check");
+                console.log(data)
+                setIsFollowed(data)
+                if (data == true) {
+                  setIsFollwing("Following")
+                }
+              })
+              .catch((err) => {
+                if (err.name == "AbortError") {
+                  console.log("fetch Aborted");
+                } else {
+                  setIsLoading(false);
+                  setError(err.message);
+                  console.log(error)
+                }
+              })
+      //}, [])
 
 
     return (
@@ -113,6 +207,7 @@ function UserPage() {
               <p>Followers:</p><p>{followers != null && followers}</p>
               <p>Posts:</p>
               <p>{posts != null && posts}</p>
+              {checkSelf == true && <button onClick={follow}>{isFollowing}</button>}
             </div>
             {<MultiPosts items={allPosts}></MultiPosts>}
         </div>

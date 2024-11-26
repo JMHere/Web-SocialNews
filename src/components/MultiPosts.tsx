@@ -30,6 +30,7 @@ function MultiPosts({items}: multiPostProps) {
                     {group.map((post) => (
                         <div className="col">
                             <PostComp item={{
+                                postId: post.postId,
                                 postImage: post.postImage,
                                 postDescription: post.postDescription,
                                 postLikes: post.postLikes,

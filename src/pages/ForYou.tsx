@@ -18,10 +18,10 @@ function ForYou() {
     const allPostsArray: any[] | null = []
 
     interface PostType {
-      postImage: any, postDescription: any, postLikes: any, postShares: any, postText: any, username: any
+      postId: any, postImage: any, postDescription: any, postLikes: any, postShares: any, postText: any, username: any
     }
 
-    let post: PostType = { postImage: pic, postDescription: "", postLikes: 0, postShares: 0, postText: "", username: username} 
+    //let post: PostType = { postImage: pic, postDescription: "", postLikes: 0, postShares: 0, postText: "", username: username} 
 
   useEffect(() => {
     fetch("http://localhost:8080/Post/GetAllPosts")
@@ -35,7 +35,9 @@ function ForYou() {
           console.log("Posts Recieved");
           console.log(data)
           for (let i = 0; i < data.length; i++) {
-            let post: PostType = { postImage: data[i].postImage, 
+            let post: PostType = { 
+              postId: data[i].postId,
+              postImage: data[i].postImage, 
               postDescription: data[i].postDescription, 
               postLikes: data[i].postLikes, 
               postShares: data[i].postShares, 

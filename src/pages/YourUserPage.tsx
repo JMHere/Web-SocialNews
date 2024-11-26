@@ -29,7 +29,7 @@ function YourUserPage() {
     let pageId = sessionStorage.getItem("pageId")
 
     interface PostType {
-      postImage: any, postDescription: any, postLikes: any, postShares: any, postText: any, username: any
+      postId: any, postImage: any, postDescription: any, postLikes: any, postShares: any, postText: any, username: any
     }
 
   useEffect(() => {
@@ -169,7 +169,9 @@ function YourUserPage() {
           //setUsersPosts(data)
           if (gotAllPosts == false) {
             for (let i = 0; i < data.length; i++) {
-              let post: PostType = { postImage: data[i].postImage, 
+              let post: PostType = { 
+                postId: data[i].postId,
+                postImage: data[i].postImage, 
                 postDescription: data[i].postDescription, 
                 postLikes: data[i].postLikes, 
                 postShares: data[i].postShares, 
